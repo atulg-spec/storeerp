@@ -85,6 +85,6 @@ class PurchaseAdmin(admin.ModelAdmin):
 
 
 # 🌟 Optional: Global Admin Branding
-admin.site.site_header = "Inventory Management"
-admin.site.site_title = "Inventory Dashboard"
-admin.site.index_title = "Welcome to the Inventory Admin Panel"
+admin.site.site_header = "Store ERP"
+admin.site.site_title = "Store ERP Dashboard"
+admin.site.index_title = "Welcome to the Store ERP Admin"
