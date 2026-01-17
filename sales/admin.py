@@ -8,6 +8,7 @@ from datetime import datetime
 from django.utils import timezone
 from django.db import transaction
 from inventory.models import Stock
+from django.utils.safestring import mark_safe
 
 def get_local_date(dt):
     """Convert datetime to Asia/Kolkata local date."""
@@ -144,7 +145,7 @@ class SalesAdmin(admin.ModelAdmin):
         if obj.is_verified:
             return format_html('<span style="color: green; font-weight: bold;">✅ Verified</span>')
         else:
-            return format_html('<span style="color: orange; font-weight: bold;">⏳ Pending</span>')
+            return mark_safe('<span style="color: orange; font-weight: bold;">⏳ Pending</span>')
     is_verified_display.short_description = 'Status'
 
     # Simple solution: Always return actions without complex overrides
