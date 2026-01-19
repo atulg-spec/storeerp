@@ -143,7 +143,7 @@ class SalesAdmin(admin.ModelAdmin):
 
     def is_verified_display(self, obj):
         if obj.is_verified:
-            return format_html('<span style="color: green; font-weight: bold;">✅ Verified</span>')
+            return mark_safe('<span style="color: green; font-weight: bold;">✅ Verified</span>')
         else:
             return mark_safe('<span style="color: orange; font-weight: bold;">⏳ Pending</span>')
     is_verified_display.short_description = 'Status'
