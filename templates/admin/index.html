@@ -73,7 +73,40 @@
                 <i class="bi bi-calendar3"></i> {{ request.user.first_name|default:"Admin" }}, Today is {{ dashboard.today }}
             </p>
         </div>
+        <div class="col-md-4 col-12 mt-3 d-md-none">
+            <button onclick="openModal()" class="btn btn-success w-100 w-md-auto px-4 py-2 fw-semibold">
+                <i class="bi bi-qr-code-scan me-1"></i> Pay Now
+            </button>
+        </div>
     </div>
+
+    <!-- Payment Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+          <div class="modal-header">
+            <h5 class="modal-title fw-bold">Enter Payment Amount</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <input type="number" id="upiAmount" min="1" class="form-control mb-3" placeholder="Enter amount ₹">
+
+            <button class="btn btn-success w-100 fw-semibold" onclick="generateUPIQR()">
+              Confirm & Generate QR
+            </button>
+
+            <div id="qrSection" class="text-center mt-4 d-none">
+              <p class="mb-2 fw-semibold">Scan to Pay</p>
+              <img id="qrImage" class="img-fluid rounded border">
+              <p id="upiText" class="small text-muted mt-2"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
 
     <!-- Key Metrics Row -->
     <div class="row g-3 g-md-4 mb-4">
@@ -368,6 +401,31 @@
     </div>
 
 </div>
+
+<script>
+  const upiId = "atulgkartik-1@okicici";
+
+  function openModal() {
+    const modal = new bootstrap.Modal(document.getElementById("paymentModal"));
+    modal.show();
+  }
+
+  function generateUPIQR() {
+    const amount = document.getElementById("upiAmount").value;
+    if (!amount || amount <= 0) {
+      alert("Please enter a valid amount");
+      return;
+    }
+
+    const upiUrl = `upi://pay?pa=${upiId}&pn=Payment&am=${amount}&cu=INR`;
+    const qrApi = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiUrl)}`;
+
+    document.getElementById("qrImage").src = qrApi;
+    document.getElementById("upiText").innerText = `${upiId} | ₹${amount}`;
+    document.getElementById("qrSection").classList.remove("d-none");
+  }
+</script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
