@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'income',
     'partners',
     'dashboard',
+    'assistant',
     'purchase_returns',
     'utility',
 ]
@@ -122,7 +123,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = 'static'
 
-# MEDIA_URL = '/static/media/'
+MEDIA_URL = '/static/media/'
 MEDIA_ROOT = '/var/www/mrtt/static/media/'
 
 # STATICFILES_DIRS = (
