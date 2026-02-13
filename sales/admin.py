@@ -133,8 +133,8 @@ class SalesAdmin(admin.ModelAdmin):
         'sold_on',
         'is_verified_display'
     )
-    list_filter = ('sold_on', 'stock__category', 'is_verified', 'stock')
-    search_fields = ('stock__name',)
+    list_filter = ('stock__category__name', 'sold_on', 'stock__category__name', 'is_verified', 'stock')
+    search_fields = ('stock__name', 'stock__category__name')
     readonly_fields = ('total_amount', 'gross_profit', 'sold_on')
     actions = [verify_sale, download_sales_report]
     
