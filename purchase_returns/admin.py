@@ -37,6 +37,8 @@ def process_return(modeladmin, request, queryset):
 
                 ret.is_processed = True
                 ret.save()
+                from accounting.utility.calculations import debit
+                debit("Purchase Return", ret.quantity_returned*stock.cost_price)
                 processed_count += 1
         
         if processed_count > 0:

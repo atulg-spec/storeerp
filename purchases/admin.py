@@ -47,7 +47,9 @@ def mark_as_received(modeladmin, request, queryset):
 
                 # Mark all purchases as received
                 for p in purchases:
+                    from accounting.utility.calculations import credit
                     p.is_received = True
+                    credit("Purchases", p.total_cost)
                     p.save()
 
     except Exception as e:
