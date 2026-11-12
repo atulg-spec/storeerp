@@ -27,5 +27,5 @@ class Purchase(models.Model):
     def save(self, *args, **kwargs):
         # Only calculate total_cost, do NOT update stock here
         self.total_cost = self.quantity_purchased * self.cost_price_per_unit
-        self.selling_price = round(self.cost_price_per_unit / 0.8, 2)
+        self.selling_price = round(self.cost_price_per_unit / 0.7, 2)
         super().save(*args, **kwargs)

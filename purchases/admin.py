@@ -4,6 +4,7 @@ from django.utils.html import format_html
 from django.contrib import messages
 from django.db import transaction
 from inventory.models import Stock
+from decimal import Decimal
 
 @admin.action(description="Mark selected purchases as Received and Update Stock")
 def mark_as_received(modeladmin, request, queryset):
@@ -49,7 +50,7 @@ def mark_as_received(modeladmin, request, queryset):
                 for p in purchases:
                     from accounting.utility.calculations import credit
                     p.is_received = True
-                    credit("Purchases", p.total_cost)
+                    credit("Purchases", Decimal(p.total_cost), ("Purchased: " + p.stock_item.name))
                     p.save()
 
     except Exception as e:
@@ -81,7 +82,7 @@ class PurchaseAdmin(admin.ModelAdmin):
             "fields": ("created_at", "last_updated"),
         }),
     )
-    search_fields = ('stock_item__name', 'stock__category__name')
+    search_fields = ('stock_item__name', 'stock_item__category__name')
     actions = [mark_as_received]
 
 

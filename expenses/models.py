@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.db import transaction
 
 # Create your models here.
 class expenses(models.Model):
@@ -16,7 +17,11 @@ class expenses(models.Model):
         verbose_name_plural = "Expenses"
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            from accounting.utility.calculations import credit
-            credit("Expense", self.amount)
+        is_new = self.pk is None
+
+        with transaction.atomic():
             super().save(*args, **kwargs)
+
+            if is_new:
+                from accounting.utility.calculations import credit
+                credit("Expense", self.amount)

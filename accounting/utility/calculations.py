@@ -1,4 +1,4 @@
-def debit(transaction_for, amount):
+def debit(transaction_for, amount, remarks = ""):
     from accounting.models import CashFlow
     if amount <= 0:
         return
@@ -8,14 +8,15 @@ def debit(transaction_for, amount):
         amount = amount
         )
 
-def credit(transaction_for, amount):
+def credit(transaction_for, amount, remarks = ""):
     from accounting.models import CashFlow
     if amount <= 0:
         return
     CashFlow.objects.create(
         transaction_for = transaction_for,
         transaction_type = 'Credit',
-        amount = amount
+        amount = amount,
+        remarks = remarks
         )
 
 

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from decimal import Decimal
 from .models import Sales
 from django.utils.html import format_html
 from django.contrib import messages
@@ -49,7 +50,9 @@ def verify_sale(modeladmin, request, queryset):
 
                 # Mark all sales as verified
                 for sale in sales_list:
+                    from accounting.utility.calculations import debit
                     sale.is_verified = True
+                    debit("Sales", Decimal(sale.total_amount), ("Sold: " + sale.stock.name))
                     sale.save()
 
                 verified_count += len(sales_list)

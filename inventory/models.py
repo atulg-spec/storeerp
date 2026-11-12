@@ -1,5 +1,20 @@
 from django.db import models
 from accounts.models import CustomUser
+from django.db.models import Max
+
+
+def generate_stock_id():
+    last_id = Stock.objects.aggregate(
+        max_id=Max('id')
+    )['max_id']
+
+    next_id = 1000 if last_id is None else last_id + 1
+
+    while '7' in str(next_id):
+        next_id += 1
+
+    return next_id
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -9,6 +24,12 @@ class Category(models.Model):
 
 
 class Stock(models.Model):
+    id = models.PositiveIntegerField(
+        unique=True,
+        editable=False,
+        default=generate_stock_id,
+        primary_key=True
+    )
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='stocks')
     name = models.CharField(max_length=100, unique=True, default="")
